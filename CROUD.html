@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>CRUD de Tareas</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #141e30;  /* fondo oscuro */
+      background: linear-gradient(to right, #243b55, #141e30);
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 60px auto;
+      background-color: #1f2b3a;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      text-align: center;
+      font-weight: normal;
+      color: #bbb;
+      margin-bottom: 30px;
+    }
+
+    .form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .agregar {
+      background-color: #00c853;
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .agregar:hover {
+      background-color: #00b44b;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      background-color: #2e3c4e;
+      margin-bottom: 15px;
+      padding: 20px;
+      border-radius: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease;
+    }
+
+    li:hover {
+      transform: scale(1.01);
+    }
+
+    .tarea-texto {
+      font-size: 18px;
+      flex: 1;
+      margin-right: 20px;
+      color: #e0e0e0;
+    }
+
+    .acciones button {
+      margin-left: 10px;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .editar {
+      background-color: #ffc107;
+      color: #000;
+    }
+
+    .eliminar {
+      background-color: #e53935;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>CROUD de Tareas</h1>
+    <h3>Escribe tu tarea para admistrarla</h3>
+
+    <div class="form">
+      <input type="text" id="nuevaTarea" placeholder="Ej: Terminar proyecto de clase...">
+      <button class="agregar" onclick="agregarTarea()">➕ Agregar</button>
+    </div>
+
+    <ul id="listaTareas"></ul>
+  </div>
+
+  <script>
+    let tareas = [];
+
+    function agregarTarea() {
+      const input = document.getElementById("nuevaTarea");
+      const texto = input.value.trim();
+
+      if (texto !== "") {
+        tareas.push(texto);
+        input.value = "";
+        mostrarTareas();
+      } else {
+        alert("Por favor escribe una tarea.");
+      }
+    }
+
+    function mostrarTareas() {
+      const lista = document.getElementById("listaTareas");
+      lista.innerHTML = "";
+
+      tareas.forEach((tarea, index) => {
+        const item = document.createElement("li");
+
+        item.innerHTML = `
+          <span class="tarea-texto">${tarea}</span>
+          <div class="acciones">
+            <button class="editar" onclick="editarTarea(${index})">✏️ Editar</button>
+            <button class="eliminar" onclick="eliminarTarea(${index})">🗑️ Eliminar</button>
+          </div>
+        `;
+
+        lista.appendChild(item);
+      });
+    }
+
+    function editarTarea(index) {
+      const nuevaTarea = prompt("Editar tarea:", tareas[index]);
+
+      if (nuevaTarea !== null && nuevaTarea.trim() !== "") {
+        tareas[index] = nuevaTarea.trim();
+        mostrarTareas();
+      }
+    }
+
+    function eliminarTarea(index) {
+      if (confirm("¿Estás seguro de eliminar esta tarea?")) {
+        tareas.splice(index, 1);
+        mostrarTareas();
+      }
+    }
+  </script>
+
+</body>
+</html>
+
